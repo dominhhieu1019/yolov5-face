@@ -61,7 +61,7 @@ def show_results(img, xywh, conf, landmarks, class_num, output_path=''):
     # crop and output face
     crop_face = img[y1:y2,x1:x2]
     # print(y1,y2,x1,x2)
-    if crop_face.size != 0:
+    if crop_face.size != 0 and output_path:
         output_file_name = output_path[:-4] + '_' + str(y1) + '_' + str(x1) + '.jpg'
         cv2.imwrite(output_file_name, crop_face)
 
@@ -147,7 +147,106 @@ def detect_one(model, image_path, device, output_path):
 
     cv2.imwrite(output_path[:-4] +'_result.jpg', orgimg)
 
+from imutils.video import VideoStream
+from imutils.video import FPS
+import time
 
+def detect_webcam(model, device):
+    # Load model
+    img_size = 2048
+    conf_thres = 0.3
+    iou_thres = 0.5
+
+    # initialize the video stream and allow the camera sensor to warm up
+    # print("[INFO] starting video stream...")
+    vs = VideoStream(src=0).start()
+    # vs = VideoStream(usePiCamera=True).start()
+
+    time.sleep(2.0)
+    # start the FPS counter
+    fps = FPS().start()
+
+    # loop over frames from the video file stream
+    while True:
+        # grab the frame from the threaded video stream and resize it
+        # to 500px (to speedup processing)
+        frame = vs.read()
+        img0 = copy.deepcopy(frame)
+        # frame = imutils.resize(frame, width=500)
+
+        h0, w0 = frame.shape[:2]  # orig hw
+        r = img_size / max(h0, w0)  # resize image to img_size
+
+        if r != 1:  # always resize down, only resize up if training with augmentation
+            interp = cv2.INTER_AREA if r < 1  else cv2.INTER_LINEAR
+            img0 = cv2.resize(img0, (int(w0 * r), int(h0 * r)), interpolation=interp)
+
+        imgsz = check_img_size(img_size, s=model.stride.max())  # check img_size
+
+        img = letterbox(img0, new_shape=imgsz)[0]
+        # Convert
+        img = img[:, :, ::-1].transpose(2, 0, 1).copy()  # BGR to RGB, to 3x416x416
+
+        # Run inference
+        t0 = time.time()
+
+        img = torch.from_numpy(img).to(device)
+        img = img.float()  # uint8 to fp16/32
+        img /= 255.0  # 0 - 255 to 0.0 - 1.0
+        if img.ndimension() == 3:
+            img = img.unsqueeze(0)
+
+        # Inference
+        t1 = time_synchronized()
+        pred = model(img)[0]
+
+        # Apply NMS
+        pred = non_max_suppression_face(pred, conf_thres, iou_thres)
+
+        # print('img.shape: ', img.shape)
+        # print('orgimg.shape: ', orgimg.shape)
+        # file_predict = open(output_path[:-4] + '.txt', 'w+')
+        # Process detections
+        for i, det in enumerate(pred):  # detections per image
+            gn = torch.tensor(frame.shape)[[1, 0, 1, 0]].to(device)  # normalization gain whwh
+            gn_lks = torch.tensor(frame.shape)[[1, 0, 1, 0, 1, 0, 1, 0, 1, 0]].to(device)  # normalization gain landmarks
+            if len(det):
+                # Rescale boxes from img_size to im0 size
+                det[:, :4] = scale_coords(img.shape[2:], det[:, :4], frame.shape).round()
+
+                # Print results
+                for c in det[:, -1].unique():
+                    n = (det[:, -1] == c).sum()  # detections per class
+
+                det[:, 5:15] = scale_coords_landmarks(img.shape[2:], det[:, 5:15], frame.shape).round()
+
+                for j in range(det.size()[0]):
+                    xywh = (xyxy2xywh(det[j, :4].view(1, 4)) / gn).view(-1).tolist()
+                    conf = det[j, 4].cpu().numpy()
+                    landmarks = (det[j, 5:15].view(1, 10) / gn_lks).view(-1).tolist()
+                    class_num = det[j, 15].cpu().numpy()
+                    frame = show_results(frame, xywh, conf, landmarks, class_num, output_path)
+                    # file_predict.writelines(' '.join(map(str, xywh)))
+                    # file_predict.write('\n')
+        
+        # display the image to our screen
+        cv2.imshow("Frame", frame)
+        key = cv2.waitKey(1) & 0xFF
+        # cv2.imwrite(output_path[:-4] +'_result.jpg', orgimg)
+        # if the `q` key was pressed, break from the loop
+        if key == ord("q"):
+            break
+        # update the FPS counter
+        fps.update()
+    
+    # stop the timer and display FPS information
+    fps.stop()
+    print("[INFO] elasped time: {:.2f}".format(fps.elapsed()))
+    print("[INFO] approx. FPS: {:.2f}".format(fps.fps()))
+    # do a bit of cleanup
+    cv2.destroyAllWindows()
+    vs.stop()
+        
 
 
 if __name__ == '__main__':
@@ -158,7 +257,14 @@ if __name__ == '__main__':
     parser.add_argument('--img-size', type=int, default=640, help='inference size (pixels)')
     opt = parser.parse_args()
     # print(opt)
-    output_path = os.path.join(opt.output, opt.image.split('/')[-1][:-4])
+    if opt.output:
+        output_path = ''
+    else:
+        output_path = os.path.join(opt.output, opt.image.split('/')[-1][:-4])
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     model = load_model(opt.weights, device)
     detect_one(model, opt.image, device, output_path)
+
+
+
+
