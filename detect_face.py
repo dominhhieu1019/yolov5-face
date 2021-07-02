@@ -260,7 +260,7 @@ if __name__ == '__main__':
     
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     model = load_model(opt.weights, device)
-    if opt.image == 0:
+    if opt.image == '0':
         output_path = ''
         detect_webcam(model, device)
     else:
