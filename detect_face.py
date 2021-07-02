@@ -1,6 +1,9 @@
 # -*- coding: UTF-8 -*-
 import gi 
 gi.require_version('Gtk','3.0')
+import matplotlib
+matplotlib.use('Agg')
+
 import argparse
 import time
 from pathlib import Path
