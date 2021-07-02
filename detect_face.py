@@ -168,10 +168,10 @@ def detect_webcam(model, device):
     vs = VideoStream(src=0).start()
     # vs = VideoStream(usePiCamera=True).start()
 
-    time.sleep(2.0)
+    time.sleep(1.0)
     # start the FPS counter
     fps = FPS().start()
-
+    i = 0
     # loop over frames from the video file stream
     while True:
         # grab the frame from the threaded video stream and resize it
@@ -237,8 +237,9 @@ def detect_webcam(model, device):
         
         # display the image to our screen
         cv2.imshow("Frame", frame)
-        print(time.time())
-        key = cv2.waitKey(3000) & 0xFF
+        # print(time.time())
+        i += 1
+        key = cv2.waitKey(1000) & 0xFF
         # cv2.imwrite(output_path[:-4] +'_result.jpg', orgimg)
         # if the `q` key was pressed, break from the loop
         if key == ord("q"):
@@ -250,6 +251,7 @@ def detect_webcam(model, device):
     fps.stop()
     print("[INFO] elasped time: {:.2f}".format(fps.elapsed()))
     print("[INFO] approx. FPS: {:.2f}".format(fps.fps()))
+    print(i)
     # do a bit of cleanup
     cv2.destroyAllWindows()
     vs.stop()
