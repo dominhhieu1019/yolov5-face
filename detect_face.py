@@ -1,6 +1,6 @@
 # -*- coding: UTF-8 -*-
 import gi 
-gi.require_version('Gtk','2.0')
+gi.require_version('Gtk','3.0')
 import argparse
 import time
 from pathlib import Path
