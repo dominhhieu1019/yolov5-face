@@ -257,13 +257,15 @@ if __name__ == '__main__':
     parser.add_argument('--img-size', type=int, default=640, help='inference size (pixels)')
     opt = parser.parse_args()
     # print(opt)
-    if opt.output:
-        output_path = ''
-    else:
-        output_path = os.path.join(opt.output, opt.image.split('/')[-1][:-4])
+    
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     model = load_model(opt.weights, device)
-    detect_one(model, opt.image, device, output_path)
+    if opt.image == 0:
+        output_path = ''
+        detect_webcam(model, device)
+    else:
+        output_path = os.path.join(opt.output, opt.image.split('/')[-1][:-4])
+        detect_one(model, opt.image, device, output_path)
 
 
 
