@@ -68,7 +68,7 @@ def show_results(img, xywh, conf, landmarks, class_num, output_path=''):
     if crop_face.size != 0 and output_path:
         output_file_name = output_path[:-4] + '_' + str(y1) + '_' + str(x1) + '.jpg'
     else:
-        output_file_name = 'result/' + str(time.time()) + '.jpg'
+        output_file_name = 'results/' + str(time.time()) + '.jpg'
     cv2.imwrite(output_file_name, crop_face)
 
     clors = [(255,0,0),(0,255,0),(0,0,255),(255,255,0),(0,255,255)]
@@ -238,7 +238,7 @@ def detect_webcam(model, device):
         # display the image to our screen
         cv2.imshow("Frame", frame)
         print(time.time())
-        key = cv2.waitKey(1) & 0xFF
+        key = cv2.waitKey(3000) & 0xFF
         # cv2.imwrite(output_path[:-4] +'_result.jpg', orgimg)
         # if the `q` key was pressed, break from the loop
         if key == ord("q"):
