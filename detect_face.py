@@ -213,27 +213,27 @@ def detect_webcam(model, device):
         # print('orgimg.shape: ', orgimg.shape)
         # file_predict = open(output_path[:-4] + '.txt', 'w+')
         # Process detections
-        for i, det in enumerate(pred):  # detections per image
-            gn = torch.tensor(frame.shape)[[1, 0, 1, 0]].to(device)  # normalization gain whwh
-            gn_lks = torch.tensor(frame.shape)[[1, 0, 1, 0, 1, 0, 1, 0, 1, 0]].to(device)  # normalization gain landmarks
-            if len(det):
-                # Rescale boxes from img_size to im0 size
-                det[:, :4] = scale_coords(img.shape[2:], det[:, :4], frame.shape).round()
+        # for i, det in enumerate(pred):  # detections per image
+        #     gn = torch.tensor(frame.shape)[[1, 0, 1, 0]].to(device)  # normalization gain whwh
+        #     gn_lks = torch.tensor(frame.shape)[[1, 0, 1, 0, 1, 0, 1, 0, 1, 0]].to(device)  # normalization gain landmarks
+        #     if len(det):
+        #         # Rescale boxes from img_size to im0 size
+        #         det[:, :4] = scale_coords(img.shape[2:], det[:, :4], frame.shape).round()
 
-                # Print results
-                for c in det[:, -1].unique():
-                    n = (det[:, -1] == c).sum()  # detections per class
+        #         # Print results
+        #         for c in det[:, -1].unique():
+        #             n = (det[:, -1] == c).sum()  # detections per class
 
-                det[:, 5:15] = scale_coords_landmarks(img.shape[2:], det[:, 5:15], frame.shape).round()
+        #         det[:, 5:15] = scale_coords_landmarks(img.shape[2:], det[:, 5:15], frame.shape).round()
 
-                for j in range(det.size()[0]):
-                    xywh = (xyxy2xywh(det[j, :4].view(1, 4)) / gn).view(-1).tolist()
-                    conf = det[j, 4].cpu().numpy()
-                    landmarks = (det[j, 5:15].view(1, 10) / gn_lks).view(-1).tolist()
-                    class_num = det[j, 15].cpu().numpy()
-                    frame = show_results(frame, xywh, conf, landmarks, class_num, output_path)
-                    # file_predict.writelines(' '.join(map(str, xywh)))
-                    # file_predict.write('\n')
+        #         for j in range(det.size()[0]):
+        #             xywh = (xyxy2xywh(det[j, :4].view(1, 4)) / gn).view(-1).tolist()
+        #             conf = det[j, 4].cpu().numpy()
+        #             landmarks = (det[j, 5:15].view(1, 10) / gn_lks).view(-1).tolist()
+        #             class_num = det[j, 15].cpu().numpy()
+        #             frame = show_results(frame, xywh, conf, landmarks, class_num, output_path)
+        #             # file_predict.writelines(' '.join(map(str, xywh)))
+        #             # file_predict.write('\n')
         
         # display the image to our screen
         cv2.imshow("Frame", frame)
