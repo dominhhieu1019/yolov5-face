@@ -236,7 +236,7 @@ def detect_webcam(model, device):
         #             # file_predict.write('\n')
         
         # display the image to our screen
-        cv2.imshow("Frame", frame)
+        # cv2.imshow("Frame", frame)
         # print(time.time())
         i += 1
         key = cv2.waitKey(1000) & 0xFF
