@@ -239,7 +239,7 @@ def detect_webcam(model, device):
         # cv2.imshow("Frame", frame)
         # print(time.time())
         i += 1
-        key = cv2.waitKey(1000) & 0xFF
+        key = cv2.waitKey(1) & 0xFF
         # cv2.imwrite(output_path[:-4] +'_result.jpg', orgimg)
         # if the `q` key was pressed, break from the loop
         if key == ord("q") or i == 10:
