@@ -1,4 +1,6 @@
 # -*- coding: UTF-8 -*-
+import gi 
+gi.require_version('Gtk','2.0')
 import argparse
 import time
 from pathlib import Path
@@ -16,7 +18,6 @@ from utils.general import check_img_size, non_max_suppression_face, apply_classi
     strip_optimizer, set_logging, increment_path
 from utils.plots import plot_one_box
 from utils.torch_utils import select_device, load_classifier, time_synchronized
-
 
 def load_model(weights, device):
     model = attempt_load(weights, map_location=device)  # load FP32 model
