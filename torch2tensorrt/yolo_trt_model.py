@@ -24,12 +24,12 @@ class YoloTrtModel():
         fp16_mode: True则FP16推理
         '''
         trt_engine_path = onnx_model_path.replace('.onnx','.trt')
-
+        print('1')
         # ONNX->TensorRT,生成trt引擎文件后可注释
         ONNX_to_TensorRT(fp16_mode=fp16_mode,onnx_model_path=onnx_model_path,trt_engine_path=trt_engine_path)
         # 初始化TensorRT, 加载trt引擎文件
         self.model_params=Init_TensorRT(trt_engine_path)
-
+        print('2')
         # 输出特征
         self.stride8_shape=(1,3,80,80,16)
         self.stride16_shape=(1,3,40,40,16)
