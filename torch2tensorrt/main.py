@@ -95,6 +95,7 @@ if __name__ == '__main__':
 
     # Apply NMS
     pred = non_max_suppression_face(pred, conf_thres=0.3, iou_thres=0.5)
+    print(pred)
    
     # ============可视化================
     img_vis(img,orgimg,pred,device)
