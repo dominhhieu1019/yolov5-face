@@ -90,7 +90,7 @@ if __name__ == '__main__':
     # ============TensorRT推理================
     # 初始化TensorRT引擎
     yolo_trt_model=YoloTrtModel(device,onnx_model_path,fp16_mode)
-
+    print('3')
     # 耗时统计 = tensorrt推理 + torch后处理
     pred=yolo_trt_model(img.cpu().numpy()) #tensorrt推理
     pred=yolo_trt_model.after_process(pred,device) # torch后处理
