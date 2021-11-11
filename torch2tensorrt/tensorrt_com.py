@@ -176,7 +176,6 @@ def ONNX_to_TensorRT(max_batch_size=1,fp16_mode=False,onnx_model_path=None,trt_e
         output_shape=network.get_layer(network.num_layers - 1).get_output(0).shape
         # network.mark_output(network.get_layer(network.num_layers -1).get_output(0))
         print('output shape:',output_shape)
-        print(network)
         engine = builder.build_cuda_engine(network)  # 注意，这里的network是INetworkDefinition类型，即填充后的计算图
         print("Completed creating Engine")
 
