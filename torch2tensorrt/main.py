@@ -79,7 +79,9 @@ if __name__ == '__main__':
     # ============参数================
     img_path=cur_path+"/sample.jpg" #测试图片路径
     device="cuda:0" 
-    onnx_model_path=cur_path+"/../../yolov5l-face.onnx" #ONNX模型路径
+    # onnx_model_path=cur_path+"/../../yolov5l-face.onnx" #ONNX模型路径 
+    onnx_model_path=cur_path+"/../weights/yolov5n.onnx"
+
     fp16_mode=True  #True则FP16推理
 
     # ============图像预处理================
