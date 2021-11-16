@@ -80,7 +80,8 @@ if __name__ == '__main__':
     img_path=cur_path+"/sample.jpg" #测试图片路径
     device="cuda:0" 
     # onnx_model_path=cur_path+"/../../yolov5l-face.onnx" #ONNX模型路径 
-    onnx_model_path=cur_path+"/../weights/yolov5n.onnx"
+    # onnx_model_path=cur_path+"/../weights/yolov5n.onnx"
+    trt_engine_path=cur_path+"/../weights/yolov5n.trt"
 
     fp16_mode=True  #True则FP16推理
 
@@ -89,7 +90,8 @@ if __name__ == '__main__':
     
     # ============TensorRT推理================
     # 初始化TensorRT引擎
-    yolo_trt_model=YoloTrtModel(device,onnx_model_path,fp16_mode)
+    # yolo_trt_model=YoloTrtModel(device,onnx_model_path,fp16_mode)
+    yolo_trt_model=YoloTrtModel(device,trt_engine_path,fp16_mode)
     print('3')
     # 耗时统计 = tensorrt推理 + torch后处理
     pred=yolo_trt_model(img.cpu().numpy()) #tensorrt推理

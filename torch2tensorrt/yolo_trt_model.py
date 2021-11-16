@@ -16,17 +16,19 @@ class YoloTrtModel():
     '''
     ONNX->TensorRT并推理
     '''
-    def __init__(self,device_id="cuda:0",onnx_model_path=None,fp16_mode=False):
+    # def __init__(self,device_id="cuda:0",onnx_model_path=None,fp16_mode=False):
+    def __init__(self,device_id="cuda:0",trt_engine_path=None,fp16_mode=False):    
         '''
         device_id: "cuda:0"
         onnx_model_path: 加载onnx模型的路径
         output_size: # 输出尺寸 eg:(1,-1) 
         fp16_mode: True则FP16推理
         '''
-        trt_engine_path = onnx_model_path.replace('.onnx','.trt')
+        # trt_engine_path = onnx_model_path.replace('.onnx','.trt')
+
         print('1')
         # ONNX->TensorRT,生成trt引擎文件后可注释
-        ONNX_to_TensorRT(fp16_mode=fp16_mode,onnx_model_path=onnx_model_path,trt_engine_path=trt_engine_path)
+        # ONNX_to_TensorRT(fp16_mode=fp16_mode,onnx_model_path=onnx_model_path,trt_engine_path=trt_engine_path)
         # 初始化TensorRT, 加载trt引擎文件
         self.model_params=Init_TensorRT(trt_engine_path)
         print('2')
