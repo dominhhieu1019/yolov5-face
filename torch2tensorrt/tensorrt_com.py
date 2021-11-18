@@ -82,16 +82,13 @@ def allocate_buffers(engine):
 
 def Do_Inference(context, bindings, inputs, outputs, stream, batch_size=1):
     # Transfer data from CPU to the GPU.
-    print('start inference')
     [cuda.memcpy_htod_async(inp.device, inp.host, stream) for inp in inputs]
     # htod： host to device 将数据由cpu复制到gpu device
     # Run inference.
-    print('start run')
     context.execute_async_v2(bindings=bindings, stream_handle=stream.handle)
     # 当创建network时显式指定了batchsize， 则使用execute_async_v2, 否则使用execute_async
     # Transfer predictions back from the GPU.
     [cuda.memcpy_dtoh_async(out.host, out.device, stream) for out in outputs]
-    print('end inference')
     # gpu to cpu
     # Synchronize the stream
     stream.synchronize()
