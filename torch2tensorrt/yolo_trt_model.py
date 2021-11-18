@@ -47,7 +47,7 @@ class YoloTrtModel():
         # inputs[1].host = ... for multiple input  对于多输入情况
 
         trt_outputs = Do_Inference(context, bindings=bindings, inputs=inputs, outputs=outputs, stream=stream)  # numpy data
-        print(trt_outputs.shape)
+
         stride_8 = trt_outputs[0].reshape(*self.stride8_shape) # 输出形状由一维转为指定形状
         stride_16 = trt_outputs[1].reshape(*self.stride16_shape) # 输出形状由一维转为指定形状
         stride_32 = trt_outputs[2].reshape(*self.stride32_shape) # 输出形状由一维转为指定形状
