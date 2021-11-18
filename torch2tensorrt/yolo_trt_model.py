@@ -61,14 +61,16 @@ class YoloTrtModel():
 
         # 降8、16、32倍
         stride= torch.tensor([8.,16.,32.]).to(device)
+        print('stride: ',stride)
 
         x=[torch.from_numpy(pred[0]).to(device),torch.from_numpy(pred[1]).to(device),torch.from_numpy(pred[2]).to(device)]
+        print('x: ',x)
         # =====提取自models/yolo.py=====
         no=16 # 4坐标+1置信度+10关键点坐标+1类别
         nl=3
      
         grid=[torch.zeros(1).to(device)] * nl 
-
+        print('grid: ',grid)
         anchor_grid=torch.tensor([[[[[[  4.,   5.]]],
             [[[  8.,  10.]]],
             [[[ 13.,  16.]]]]],
