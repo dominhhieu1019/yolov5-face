@@ -54,7 +54,7 @@ tensorrt model input size must be src pth input size
 #             f.write(engine.serialize())
 #         print("Completed creating Engine")
 
-def ONNX_to_TensorRT(max_batch_size=1,fp16_mode=False,onnx_model_path=None,trt_engine_path=None):
+def ONNX_to_TensorRT(max_batch_size=1,fp16_mode=True,onnx_model_path=None,trt_engine_path=None):
     """
     生成cudaEngine，并保存引擎文件(仅支持固定输入尺度)
     
