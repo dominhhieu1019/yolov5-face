@@ -61,7 +61,9 @@ class YoloTrtModel():
 
         # 降8、16、32倍
         print('after process')
-        stride = torch.tensor([8.,16.,32.]).to(device)
+        stride = torch.tensor([8.,16.,32.])
+        print(stride)
+        stride = stride.to(device)
         print('stride: ',stride)
 
         x=[torch.from_numpy(pred[0]).to(device),torch.from_numpy(pred[1]).to(device),torch.from_numpy(pred[2]).to(device)]
