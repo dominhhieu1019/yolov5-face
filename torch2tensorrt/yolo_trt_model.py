@@ -45,13 +45,14 @@ class YoloTrtModel():
         # 加载输入数据到buffer
         inputs[0].host = img_np_nchw.reshape(-1) #输入形状转为一维，作为输入
         # inputs[1].host = ... for multiple input  对于多输入情况
-        print("inputs[0].host:",inputs[0].host.shape)
+
         trt_outputs = Do_Inference(context, bindings=bindings, inputs=inputs, outputs=outputs, stream=stream)  # numpy data
+        print(trt_outputs.shape)
         stride_8 = trt_outputs[0].reshape(*self.stride8_shape) # 输出形状由一维转为指定形状
         stride_16 = trt_outputs[1].reshape(*self.stride16_shape) # 输出形状由一维转为指定形状
         stride_32 = trt_outputs[2].reshape(*self.stride32_shape) # 输出形状由一维转为指定形状
         return [stride_8,stride_16,stride_32]
-
+        
     def after_process(self,pred,device):
         '''
         Pytorch后处理

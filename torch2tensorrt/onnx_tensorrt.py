@@ -107,4 +107,4 @@ def ONNX_to_TensorRT(max_batch_size=1,fp16_mode=False,onnx_model_path=None,trt_e
         print('============ONNX->TensorRT SUCCESS============')
 
 if __name__ == '__main__':
-    ONNX_to_TensorRT(onnx_model_path='../weights/yolov5s-face.onnx', trt_engine_path='../weights/yolov5s-face.trt')
+    ONNX_to_TensorRT(onnx_model_path='../weights/yolov5n-face.onnx', trt_engine_path='../weights/yolov5n-face-nofp16.trt')
