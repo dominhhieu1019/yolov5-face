@@ -98,6 +98,7 @@ if __name__ == '__main__':
     pred=yolo_trt_model.after_process(pred,device) # torch后处理
 
     # Apply NMS
+    print('before NMS: ', pred.shape)
     pred = non_max_suppression_face(pred, conf_thres=0.3, iou_thres=0.5)
     print(pred)
    

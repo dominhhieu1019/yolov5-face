@@ -393,6 +393,7 @@ def non_max_suppression_face(prediction, conf_thres=0.25, iou_thres=0.45, classe
     merge = False  # use merge-NMS
 
     t = time.time()
+    print(t)
     output = [torch.zeros((0, 16), device=prediction.device)] * prediction.shape[0]
     for xi, x in enumerate(prediction):  # image index, image inference
         # Apply constraints

@@ -47,11 +47,9 @@ class YoloTrtModel():
         # inputs[1].host = ... for multiple input  对于多输入情况
 
         trt_outputs = Do_Inference(context, bindings=bindings, inputs=inputs, outputs=outputs, stream=stream)  # numpy data
-
         stride_8 = trt_outputs[0].reshape(*self.stride8_shape) # 输出形状由一维转为指定形状
         stride_16 = trt_outputs[1].reshape(*self.stride16_shape) # 输出形状由一维转为指定形状
         stride_32 = trt_outputs[2].reshape(*self.stride32_shape) # 输出形状由一维转为指定形状
-        print('done')
         return [stride_8,stride_16,stride_32]
         
     def after_process(self,pred,device):
@@ -60,7 +58,7 @@ class YoloTrtModel():
         pred: tensorrt输出
         device: "cuda:0"
         '''
-        print('after process')
+
         # 降8、16、32倍
         stride= torch.tensor([8.,16.,32.]).to(device)
 
@@ -83,6 +81,7 @@ class YoloTrtModel():
        
         
         z = [] 
+        print('here')
         for i in range(len(x)):
         
             bs,ny, nx = x[i].shape[0],x[i].shape[2] ,x[i].shape[3] 
