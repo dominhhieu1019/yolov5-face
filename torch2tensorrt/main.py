@@ -81,7 +81,7 @@ if __name__ == '__main__':
     device="cuda:0" 
     # onnx_model_path=cur_path+"/../../yolov5l-face.onnx" #ONNX模型路径 
     # onnx_model_path=cur_path+"/../weights/yolov5n.onnx"
-    trt_engine_path=cur_path+"/../weights/yolov5s.trt"
+    trt_engine_path=cur_path+"/../weights/yolov5n-face.trt"
 
     fp16_mode=True  #True则FP16推理
 
