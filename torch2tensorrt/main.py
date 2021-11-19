@@ -4,6 +4,7 @@ import sys
 import cv2
 import copy
 import torch
+from torch._C import device
 root_path=os.path.dirname(os.path.abspath(os.path.dirname(__file__))) # 项目根路径：获取当前路径，再上级路径
 sys.path.append(root_path)  # 将项目根路径写入系统路径
 from utils.general import check_img_size,non_max_suppression_face,scale_coords,xyxy2xywh
@@ -79,7 +80,8 @@ def img_vis(img,orgimg,pred,device,vis_thres = 0.6):
 if __name__ == '__main__':
     # ============参数================
     img_path=cur_path+"/sample.jpg" #测试图片路径
-    device="cuda" 
+    # device="cuda:0"
+    device = torch.device('cuda' if torch.cuda.is_available() else 'cpu') 
     # onnx_model_path=cur_path+"/../../yolov5l-face.onnx" #ONNX模型路径 
     # onnx_model_path=cur_path+"/../weights/yolov5n.onnx"
     trt_engine_path=cur_path+"/../weights/yolov5n-0.5.trt"
