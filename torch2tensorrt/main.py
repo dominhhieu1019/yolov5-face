@@ -84,7 +84,7 @@ if __name__ == '__main__':
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu') 
     # onnx_model_path=cur_path+"/../../yolov5l-face.onnx" #ONNX模型路径 
     # onnx_model_path=cur_path+"/../weights/yolov5n.onnx"
-    trt_engine_path=cur_path+"/../weights/yolov5n-0.5.trt"
+    trt_engine_path=cur_path+"/../weights/yolov5n.trt"
 
     fp16_mode=True  #True则FP16推理
 
