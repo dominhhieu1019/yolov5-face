@@ -79,7 +79,7 @@ def img_vis(img,orgimg,pred,device,vis_thres = 0.6):
 if __name__ == '__main__':
     # ============参数================
     img_path=cur_path+"/sample.jpg" #测试图片路径
-    device="cuda:0" 
+    device="cuda" 
     # onnx_model_path=cur_path+"/../../yolov5l-face.onnx" #ONNX模型路径 
     # onnx_model_path=cur_path+"/../weights/yolov5n.onnx"
     trt_engine_path=cur_path+"/../weights/yolov5n-0.5.trt"
