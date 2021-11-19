@@ -99,7 +99,7 @@ if __name__ == '__main__':
     # 耗时统计 = tensorrt推理 + torch后处理
     pred=yolo_trt_model(img.cpu().numpy()) #tensorrt推理
     gc.collect()
-    pred=yolo_trt_model.after_process(pred,device) # torch后处理
+    # pred=yolo_trt_model.after_process(pred,device) # torch后处理
 
     # Apply NMS
     print('before NMS: ', pred.shape)
